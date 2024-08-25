@@ -1,0 +1,120 @@
+package service;
+
+import java.util.Scanner;
+
+public class BankingServiceManager {
+
+    private final KYCService kycService = new KYCServiceImpl();
+    private final CardService cardService = new CardServiceImpl();
+    private final ChequeBookRequestService chequeBookService = new ChequeBookRequestServiceImpl();
+
+    public void manageServices(Scanner scanner) {
+        boolean continueRunning = true;
+
+        while (continueRunning) {
+            System.out.println("Choose a service:");
+            System.out.println("1. KYC");
+            System.out.println("2. Card Service");
+            System.out.println("3. Issue Cheque Book");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice (1/2/3/4): ");
+            int choice = Integer.parseInt(scanner.nextLine().trim());
+
+            switch (choice) {
+                case 1:
+                    handleKYC(scanner);
+                    break;
+
+                case 2:
+                    handleCardService(scanner);
+                    break;
+
+                case 3:
+                    handleChequeBookRequest(scanner);
+                    break;
+
+                case 4:
+                    continueRunning = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        }
+    }
+
+    private void handleKYC(Scanner scanner) {
+        System.out.println("Enter Aadhar Number:");
+        String aadharNumber = scanner.nextLine();
+
+        // Check format: 12 digits
+        if (aadharNumber.length() != 12 || !aadharNumber.matches("\\d+")) {
+            System.out.println("Invalid Aadhar Number.");
+            return;
+        }
+
+        System.out.println("Enter Your name:");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter your id:");
+        String id = scanner.nextLine();
+
+        System.out.println("Enter your address:");
+        String address = scanner.nextLine();
+
+        System.out.println("Enter your contact number:");
+        String contactNumber = scanner.nextLine();
+
+        System.out.println("Enter your ssn:");
+        String ssn = scanner.nextLine();
+
+        kycService.collectCustomerInfo(name, id, address, contactNumber, ssn);
+    }
+
+    private void handleCardService(Scanner scanner) {
+        System.out.println("Select an option: 1- Create Debit Card, 2- Create Credit Card, 3- Block Debit Card, 4- Block Credit Card");
+        int cardOption = Integer.parseInt(scanner.nextLine().trim());
+
+        switch (cardOption) {
+            case 1:
+                System.out.println("Enter Account Number, Customer ID, Card Holder Name:");
+                String debitAccountNumber = scanner.nextLine();
+                String debitCustomerId = scanner.nextLine();
+                String debitCardHolderName = scanner.nextLine();
+                cardService.createDebitCard(debitAccountNumber, debitCustomerId, debitCardHolderName);
+                break;
+
+            case 2:
+                System.out.println("Enter Account Number, Customer ID, Card Holder Name:");
+                String creditAccountNumber = scanner.nextLine();
+                String creditCustomerId = scanner.nextLine();
+                String creditCardHolderName = scanner.nextLine();
+                cardService.createCreditCard(creditAccountNumber, creditCustomerId, creditCardHolderName);
+                break;
+
+            case 3:
+                System.out.println("Enter Account Number, Customer ID:");
+                String blockDebitAccountNumber = scanner.nextLine();
+                String blockDebitCustomerId = scanner.nextLine();
+                cardService.blockDebitCard(blockDebitAccountNumber, blockDebitCustomerId);
+                break;
+
+            case 4:
+                System.out.println("Enter Account Number, Customer ID:");
+                String blockCreditAccountNumber = scanner.nextLine();
+                String blockCreditCustomerId = scanner.nextLine();
+                cardService.blockCreditCard(blockCreditAccountNumber, blockCreditCustomerId);
+                break;
+
+            default:
+                System.out.println("Invalid card option selected.");
+                break;
+        }
+    }
+
+    private void handleChequeBookRequest(Scanner scanner) {
+        System.out.println("Enter Account Number:");
+        String accountNumber = scanner.nextLine();
+        chequeBookService.issue(accountNumber);
+}
+}
