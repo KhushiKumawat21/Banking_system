@@ -10,7 +10,7 @@ import transaction.UserService;
 import transaction.UserServiceImpl;
 import uiLayer.Login;
 import loan.LoanTest;
-
+import service.BankingServiceManager;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
@@ -65,9 +65,8 @@ public class Main {
                         bankingSystemCLI.startBankingSystemCLI(sc);
                         break;
                     case 6:
-                        // Initialize Services
-                        Services services = new Services();
-                        services.startServices(sc);
+                        BankingServiceManager bankingServiceManager = new BankingServiceManager();
+                        bankingServiceManager.manageServices(sc);
                         break;
                     case 7:
                         // Initialize Profile Management
